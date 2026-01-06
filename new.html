@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberShield - AI Cyber Damage Control System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #0ea5e9;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --success: #22c55e;
+            --dark: #1e293b;
+            --darker: #0f172a;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
+            --gradient-dark: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: var(--darker);
+            overflow: hidden;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, rgba(14, 165, 233, 0.05) 0%, transparent 40%);
+            animation: rotate 30s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo i {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.75rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .emergency-btn {
+            background: var(--danger);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            animation: pulse 2s infinite;
+            transition: transform 0.3s;
+        }
+
+        .emergency-btn:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            50% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); }
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 5% 4rem;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 650px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 span {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--light);
+            border: 2px solid rgba(99, 102, 241, 0.5);
+        }
+
+        .btn-outline:hover {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: var(--primary);
+        }
+
+        .hero-visual {
+            position: absolute;
+            right: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 500px;
+            height: 500px;
+        }
+
+        .shield-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .shield-icon {
+            font-size: 15rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 50px rgba(99, 102, 241, 0.5));
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .orbit-ring {
+            position: absolute;
+            border: 2px dashed rgba(99, 102, 241, 0.3);
+            border-radius: 50%;
+            animation: spin 20s linear infinite;
+        }
+
+        .orbit-ring:nth-child(1) {
+            width: 350px;
+            height: 350px;
+        }
+
+        .orbit-ring:nth-child(2) {
+            width: 450px;
+            height: 450px;
+            animation-direction: reverse;
+            animation-duration: 30s;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Stats Section */
+        .stats {
+            display: flex;
+            gap: 3rem;
+            margin-top: 3rem;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .stat-item h3 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-item p {
+            font-size: 0.875rem;
+            color: var(--gray);
+            margin-bottom: 0;
+        }
+
+        /* Incident Types Section */
+        .section {
+            padding: 6rem 5%;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-header h2 span {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-header p {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        .incident-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .incident-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .incident-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .incident-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .incident-card:hover::before {
+            opacity: 0.05;
+        }
+
+        .incident-card .icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .incident-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+        }
+
+        .incident-card p {
+            color: var(--gray);
+            font-size: 0.95rem;
+            position: relative;
+        }
+
+        .incident-card .risk-badge {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .risk-high {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .risk-medium {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+
+        /* How It Works */
+        .steps-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .steps-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .step:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .step-content {
+            flex: 1;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+
+        .step-number {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            z-index: 10;
+        }
+
+        .step-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .step-content h3 i {
+            color: var(--primary);
+        }
+
+        .step-content p {
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        .step-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .step-feature {
+            background: rgba(99, 102, 241, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            color: var(--primary);
+        }
+
+        /* Interactive Assessment Section */
+        .assessment-section {
+            background: rgba(30, 41, 59, 0.3);
+            border-top: 1px solid rgba(99, 102, 241, 0.2);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .assessment-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 24px;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .assessment-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(99, 102, 241, 0.2);
+            border-radius: 4px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .question-container {
+            min-height: 300px;
+        }
+
+        .question {
+            display: none;
+        }
+
+        .question.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .question p {
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .option {
+            background: rgba(99, 102, 241, 0.1);
+            border: 2px solid rgba(99, 102, 241, 0.3);
+            border-radius: 12px;
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .option:hover {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: var(--primary);
+            transform: translateX(10px);
+        }
+
+        .option.selected {
+            background: rgba(99, 102, 241, 0.3);
+            border-color: var(--primary);
+        }
+
+        .option i {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .option-text h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .option-text p {
+            font-size: 0.875rem;
+            color: var(--gray);
+            margin: 0;
+        }
+
+        .assessment-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        /* Results Section */
+        .results-container {
+            display: none;
+        }
+
+        .results-container.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .risk-indicator {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .risk-level {
+            display: inline-block;
+            padding: 1rem 3rem;
+            border-radius: 50px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .risk-level.high {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            border: 2px solid var(--danger);
+        }
+
+        .risk-level.medium {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+            border: 2px solid var(--warning);
+        }
+
+        .risk-level.low {
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--success);
+            border: 2px solid var(--success);
+        }
+
+        .action-steps {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .action-steps h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            color: var(--danger);
+        }
+
+        .action-step {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            align-items: flex-start;
+        }
+
+        .action-step:last-child {
+            margin-bottom: 0;
+        }
+
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .step-details h4 {
+            margin-bottom: 0.25rem;
+        }
+
+        .step-details p {
+            font-size: 0.875rem;
+            color: var(--gray);
+            margin: 0;
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .warning-box h4 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--danger);
+            margin-bottom: 1rem;
+        }
+
+        .warning-box ul {
+            margin-left: 1.5rem;
+            color: var(--gray);
+        }
+
+        .warning-box li {
+            margin-bottom: 0.5rem;
+        }
+
+        .helplines {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .helpline-card {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .helpline-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .helpline-card i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .helpline-card h4 {
+            margin-bottom: 0.5rem;
+        }
+
+        .helpline-card a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        /* Special Modules */
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .module-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.4) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 24px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .module-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+        }
+
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .module-card.phone::before {
+            background: linear-gradient(90deg, #22c55e, #10b981);
+        }
+
+        .module-card.women::before {
+            background: linear-gradient(90deg, #ec4899, #f43f5e);
+        }
+
+        .module-card.evidence::before {
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+        }
+
+        .module-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .module-card.phone .module-icon {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .module-card.women .module-icon {
+            background: rgba(236, 72, 153, 0.2);
+            color: #ec4899;
+        }
+
+        .module-card.evidence .module-icon {
+            background: rgba(99, 102, 241, 0.2);
+            color: #6366f1;
+        }
+
+        .module-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .module-card p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .module-features {
+            list-style: none;
+        }
+
+        .module-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+        }
+
+        .module-features li:last-child {
+            border-bottom: none;
+        }
+
+        .module-features li i {
+            color: var(--success);
+        }
+
+        /* Emergency Helplines Section */
+        .helplines-section {
+            background: rgba(239, 68, 68, 0.05);
+            border-top: 1px solid rgba(239, 68, 68, 0.2);
+            border-bottom: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .helplines-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .helpline-item {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s;
+        }
+
+        .helpline-item:hover {
+            transform: scale(1.02);
+            border-color: var(--danger);
+        }
+
+        .helpline-item .icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(239, 68, 68, 0.2);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--danger);
+            flex-shrink: 0;
+        }
+
+        .helpline-info h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .helpline-info .number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--danger);
+        }
+
+        .helpline-info p {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin: 0;
+        }
+
+        /* Trust Badges */
+        .trust-section {
+            text-align: center;
+            padding: 4rem 5%;
+            background: rgba(30, 41, 59, 0.3);
+        }
+
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--gray);
+        }
+
+        .trust-badge i {
+            font-size: 1.5rem;
+            color: var(--success);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(15, 23, 42, 0.9);
+            padding: 4rem 5% 2rem;
+            border-top: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            max-width: 1400px;
+            margin: 0 auto 3rem;
+        }
+
+        .footer-brand p {
+            color: var(--gray);
+            margin: 1rem 0;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .footer-social a {
+            width: 40px;
+            height: 40px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light);
+            transition: all 0.3s;
+        }
+
+        .footer-social a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-links h4 {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(99, 102, 241, 0.2);
+            color: var(--gray);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-visual {
+                display: none;
+            }
+
+            .hero-content {
+                max-width: 100%;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .steps-line {
+                display: none;
+            }
+
+            .step {
+                flex-direction: column !important;
+            }
+
+            .step-number {
+                position: relative;
+                left: auto;
+                transform: none;
+                margin-bottom: 1rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .stats {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .section-header h2 {
+                font-size: 1.75rem;
+            }
+
+            .assessment-container {
+                padding: 1.5rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--dark);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 24px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            padding: 2rem;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        /* Chatbot Widget */
+        .chatbot-widget {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+        }
+
+        .chatbot-btn {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+            transition: all 0.3s;
+        }
+
+        .chatbot-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .chatbot-window {
+            display: none;
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 380px;
+            height: 500px;
+            background: var(--dark);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .chatbot-window.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chatbot-header {
+            background: var(--gradient);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .chatbot-header img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+        }
+
+        .chatbot-header h4 {
+            flex: 1;
+        }
+
+        .chatbot-header button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.25rem;
+            cursor: pointer;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .chat-message {
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .chat-message.bot {
+            flex-direction: row;
+        }
+
+        .chat-message.user {
+            flex-direction: row-reverse;
+        }
+
+        .chat-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .chat-message.user .chat-avatar {
+            background: var(--secondary);
+        }
+
+        .chat-bubble {
+            background: rgba(99, 102, 241, 0.2);
+            padding: 0.75rem 1rem;
+            border-radius: 15px;
+            max-width: 80%;
+        }
+
+        .chat-message.user .chat-bubble {
+            background: var(--primary);
+        }
+
+        .chatbot-input {
+            padding: 1rem;
+            border-top: 1px solid rgba(99, 102, 241, 0.2);
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 25px;
+            padding: 0.75rem 1rem;
+            color: white;
+            outline: none;
+        }
+
+        .chatbot-input button {
+            background: var(--gradient);
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            color: white;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <i class="fas fa-shield-halved"></i>
+            CyberShield
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#incidents">Incidents</a></li>
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#assessment">Get Help</a></li>
+            <li><a href="#modules">Resources</a></li>
+            <li><a href="#helplines">Helplines</a></li>
+        </ul>
+        <button class="emergency-btn" onclick="scrollToAssessment()">
+            <i class="fas fa-exclamation-triangle"></i> Emergency Help
+        </button>
+        <button class="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-bolt"></i>
+                AI-Powered Emergency Response
+            </div>
+            <h1>
+                Cyber Emergency?<br>
+                <span>We Help You Act Fast.</span>
+            </h1>
+            <p>
+                When every second counts, our AI-powered system guides you through immediate damage control steps, helps preserve evidence, and connects you with the right authorities.
+            </p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="scrollToAssessment()">
+                    <i class="fas fa-play"></i> Start Emergency Assessment
+                </button>
+                <a href="#how-it-works" class="btn btn-outline">
+                    <i class="fas fa-info-circle"></i> Learn How It Works
+                </a>
+            </div>
+            <div class="stats">
+                <div class="stat-item">
+                    <h3>30 min</h3>
+                    <p>Critical Response Window</p>
+                </div>
+                <div class="stat-item">
+                    <h3>6+</h3>
+                    <p>Incident Types Covered</p>
+                </div>
+                <div class="stat-item">
+                    <h3>24/7</h3>
+                    <p>Always Available</p>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="shield-container">
+                <div class="orbit-ring"></div>
+                <div class="orbit-ring"></div>
+                <i class="fas fa-shield-halved shield-icon"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Incident Types Section -->
+    <section class="section" id="incidents">
+        <div class="section-header">
+            <h2>What Type of <span>Cyber Incident</span> Are You Facing?</h2>
+            <p>Select your situation below to get immediate, step-by-step guidance tailored to your emergency.</p>
+        </div>
+        <div class="incident-grid">
+            <div class="incident-card" onclick="startAssessment('financial')">
+                <span class="risk-badge risk-high">High Risk</span>
+                <div class="icon" style="color: #ef4444;">
+                    <i class="fas fa-credit-card"></i>
+                </div>
+                <h3>UPI / Banking Fraud</h3>
+                <p>Unauthorized transactions, money deducted without permission, fake payment links</p>
+            </div>
+            <div class="incident-card" onclick="startAssessment('otp')">
+                <span class="risk-badge risk-high">High Risk</span>
+                <div class="icon" style="color: #f59e0b;">
+                    <i class="fas fa-phone-slash"></i>
+                </div>
+                <h3>OTP / Fake Call Scam</h3>
+                <p>Someone asked for OTP, KYC verification calls, fake bank/company representatives</p>
+            </div>
+            <div class="incident-card" onclick="startAssessment('account')">
+                <span class="risk-badge risk-high">High Risk</span>
+                <div class="icon" style="color: #8b5cf6;">
+                    <i class="fas fa-user-lock"></i>
+                </div>
+                <h3>Account Hacking</h3>
+                <p>WhatsApp, Instagram, Email, or other accounts compromised or inaccessible</p>
+            </div>
+            <div class="incident-card" onclick="startAssessment('phone')">
+                <span class="risk-badge risk-high">High Risk</span>
+                <div class="icon" style="color: #22c55e;">
+                    <i class="fas fa-mobile-screen"></i>
+                </div>
+                <h3>Phone Lost / Stolen</h3>
+                <p>Mobile device lost or stolen with access to banking, social media, and personal data</p>
+            </div>
+            <div class="incident-card" onclick="startAssessment('photo')">
+                <span class="risk-badge risk-high">Sensitive</span>
+                <div class="icon" style="color: #ec4899;">
+                    <i class="fas fa-image"></i>
+                </div>
+                <h3>Photo / Video Misuse</h3>
+                <p>Personal photos or videos being misused, threatened to be shared, or leaked online</p>
+            </div>
+            <div class="incident-card" onclick="startAssessment('blackmail')">
+                <span class="risk-badge risk-high">Urgent</span>
+                <div class="icon" style="color: #ef4444;">
+                    <i class="fas fa-user-secret"></i>
+                </div>
+                <h3>Online Blackmail / Harassment</h3>
+                <p>Being threatened, blackmailed, or facing continuous online harassment</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="section" id="how-it-works">
+        <div class="section-header">
+            <h2>How <span>CyberShield</span> Helps You</h2>
+            <p>Our intelligent 4-step process ensures you take the right actions in the critical first 30 minutes.</p>
+        </div>
+        <div class="steps-container">
+            <div class="steps-line"></div>
+            
+            <div class="step">
+                <div class="step-content">
+                    <h3><i class="fas fa-comments"></i> Simple Question Assessment</h3>
+                    <p>Answer easy, non-technical questions about your situation. Our system is designed for everyone, including elderly and non-technical users.</p>
+                    <div class="step-features">
+                        <span class="step-feature">Multiple Choice</span>
+                        <span class="step-feature">Local Language</span>
+                        <span class="step-feature">No Technical Jargon</span>
+                    </div>
+                </div>
+                <div class="step-number">1</div>
+                <div class="step-content" style="visibility: hidden;"></div>
+            </div>
+
+            <div class="step">
+                <div class="step-content" style="visibility: hidden;"></div>
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3><i class="fas fa-brain"></i> AI Risk Identification</h3>
+                    <p>Our AI analyzes your responses to identify the exact type of cyber incident and determines the risk level to prioritize actions.</p>
+                    <div class="step-features">
+                        <span class="step-feature">Incident Classification</span>
+                        <span class="step-feature">Risk Assessment</span>
+                        <span class="step-feature">Priority Ranking</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-content">
+                    <h3><i class="fas fa-shield-halved"></i> Damage Control Steps</h3>
+                    <p>Get exact, ordered steps to stop further damage in the critical first 30 minutes. Each action is explained simply and clearly.</p>
+                    <div class="step-features">
+                        <span class="step-feature">Step-by-Step Guide</span>
+                        <span class="step-feature">Correct Order</span>
+                        <span class="step-feature">Clear Warnings</span>
+                    </div>
+                </div>
+                <div class="step-number">3</div>
+                <div class="step-content" style="visibility: hidden;"></div>
+            </div>
+
+            <div class="step">
+                <div class="step-content" style="visibility: hidden;"></div>
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3><i class="fas fa-headset"></i> Guided Reporting & Support</h3>
+                    <p>After damage control, get connected to the right authorities and platforms with correct helpline numbers and reporting links.</p>
+                    <div class="step-features">
+                        <span class="step-feature">Official Helplines</span>
+                        <span class="step-feature">Reporting Portals</span>
+                        <span class="step-feature">Evidence Guidance</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Assessment Section -->
+    <section class="section assessment-section" id="assessment">
+        <div class="section-header">
+            <h2>Start Your <span>Emergency Assessment</span></h2>
+            <p>Answer a few quick questions and get personalized damage control guidance immediately.</p>
+        </div>
+        <div class="assessment-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            
+            <div class="question-container" id="questionContainer">
+                <!-- Question 1 -->
+                <div class="question active" data-question="1">
+                    <h3>What happened to you?</h3>
+                    <p>Select the option that best describes your situation</p>
+                    <div class="options">
+                        <div class="option" onclick="selectOption(this, 'money_lost')">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <div class="option-text">
+                                <h4>Money was taken from my account</h4>
+                                <p>Unauthorized transaction, UPI fraud, or card misuse</p>
+                            </div>
+                        </div>
+                        <div class="option" onclick="selectOption(this, 'account_hacked')">
+                            <i class="fas fa-user-lock"></i>
+                            <div class="option-text">
+                                <h4>My account was hacked</h4>
+                                <p>Can't access WhatsApp, Instagram, Email, or other accounts</p>
+                            </div>
+                        </div>
+                        <div class="option" onclick="selectOption(this, 'phone_lost')">
+                            <i class="fas fa-mobile-screen"></i>
+                            <div class="option-text">
+                                <h4>My phone is lost or stolen</h4>
+                                <p>Physical device is missing with all my apps and data</p>
+                            </div>
+                        </div>
+                        <div class="option" onclick="selectOption(this, 'harassment')">
+                            <i class="fas fa-user-shield"></i>
+                            <div class="option-text">
+                                <h4>I'm being harassed or blackmailed</h4>
+                                <p>Someone is threatening me or misusing my photos/videos</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question" data-question="2">
+                    <h3>When did this happen?</h3>
+                    <p>Time is critical - let us know when you noticed the issue</p>
+                    <div class="options">
+                        <div class="option" onclick="selectOption(this, 'just_now')">
+                            <i class="fas fa-bolt"></i>
+                            <div class="option-text">
+                                <h4>Just now (within 30 minutes)</h4>
+                                <p>Immediate action needed - highest priority</p>
+                            </div>
+                        </div>
+                        <div class="option" onclick="selectOption(this, 'today')">
+                            <i class="fas fa-clock"></i>
+                            <div class="option-text">
+                                <h4>Today (within few hours)</h4>
+                                <p>Urgent action required</p>
+                            </div>
+                        </div>
+                        <div class="option" onclick="selectOption(this, 'yesterday')">
+                            <i class="fas fa-calendar-day"></i>
+                            <div class="option-text">
+                                <h4>Yesterday or few days ago</h4>
+                                <p>Important to act quickly</p>
+                            </div>
+                        </div>
+                        <div class="option" onclick="selectOption(this, 'week_ago')">
+                            <i class="fas fa-calendar-week"></i>
+                            <div class="option-text">
+                                <h4>More than a week ago</h4>
+                                <p>Still important to take action</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question" data-question="3">
+                    <h3>Which services/apps are affected?</h3>
+                    <p>Select all that apply to understand the full scope</p>
+                    <div class="options">
+                        <div class="option" onclick="toggleOption(this, 'banking')">
+                            <i class="fas fa-building-columns"></i>
+                            <div class="option-text">
+                                <h4>Banking / UPI Apps</h4>
+                                <p>GPay, PhonePe, Paytm, Bank apps</p>
+                            </div>
+                        </div>
+                        <div class="option" onclick="toggleOption(this, 'social')">
+                            <i class="fas fa-share-nodes"></i>
+                            <div class="option-text">
+                                <h4>Social Media</h4>
+                                <p>WhatsApp, Instagram, Facebook, Twitter</p>
+                            </div>
+                        </div>
+                        <div class="option" onclick="toggleOption(this, 'email')">
+                            <i class="fas fa-envelope"></i>
+                            <div class="option-text">
+                                <h4>Email Account</h4>
+                                <p>Gmail, Yahoo, Outlook, etc.</p>
+                            </div>
+                        </div>
+                        <div class="option" onclick="toggleOption(this, 'photos')">
+                            <i class="fas fa-images"></i>
+                            <div class="option-text">
+                                <h4>Photos / Personal Data</h4>
+                                <p>Gallery, cloud storage, personal files</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question" data-question="4">
+                    <h3>Did you share any sensitive information?</h3>
+                    <p>This helps us understand if additional accounts might be at risk</p>
+                    <div class="options">
+                        <div class="option" onclick="selectOption(this, 'shared_otp')">
+                            <i class="fas fa-key"></i>
+                            <div class="option-text">
+                                <h4>Yes, I shared OTP or password</h4>
+                                <p>Someone asked and I provided it</p>
+                            </div>
+                        </div>
+                        <div class="option" onclick="selectOption(this, 'shared_details')">
+                            <i class="fas fa-id-card"></i>
+                            <div class="option-text">
+                                <h4>Yes, I shared personal/bank details</h4>
+                                <p>Account number, card details, Aadhaar, etc.</p>
+                            </div>
+                        </div>
+                        <div class="option" onclick="selectOption(this, 'clicked_link')">
+                            <i class="fas fa-link"></i>
+                            <div class="option-text">
+                                <h4>I clicked on a suspicious link</h4>
+                                <p>Received via SMS, WhatsApp, or email</p>
+                            </div>
+                        </div>
+                        <div class="option" onclick="selectOption(this, 'not_shared')">
+                            <i class="fas fa-shield-halved"></i>
+                            <div class="option-text">
+                                <h4>No, I didn't share anything</h4>
+                                <p>The incident happened without my involvement</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-container" id="resultsContainer">
+                <div class="risk-indicator">
+                    <div class="risk-level high" id="riskLevel">⚠️ HIGH RISK</div>
+                    <p id="riskDescription">Your situation requires immediate action. Follow these steps in order.</p>
+                </div>
+
+                <div class="action-steps">
+                    <h3><i class="fas fa-bolt"></i> Immediate Actions (Do These NOW)</h3>
+                    <div id="actionSteps">
+                        <!-- Dynamic content will be inserted here -->
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Important Warnings</h4>
+                    <ul id="warningsList">
+                        <li>DON'T share any more OTPs or passwords with anyone</li>
+                        <li>DON'T delete any messages, calls, or screenshots - they are evidence</li>
+                        <li>DON'T panic - follow the steps calmly</li>
+                        <li>DON'T pay any money if someone is threatening you</li>
+                    </ul>
+                </div>
+
+                <h3 style="margin-bottom: 1rem;"><i class="fas fa-phone"></i> Contact These Helplines</h3>
+                <div class="helplines" id="helplinesList">
+                    <!-- Dynamic content will be inserted here -->
+                </div>
+
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button class="btn btn-primary" onclick="resetAssessment()">
+                        <i class="fas fa-redo"></i> Start New Assessment
+                    </button>
+                    <button class="btn btn-outline" onclick="printResults()">
+                        <i class="fas fa-print"></i> Print This Guide
+                    </button>
+                </div>
+            </div>
+
+            <div class="assessment-nav" id="assessmentNav">
+                <button class="btn btn-outline" id="prevBtn" onclick="prevQuestion()" style="visibility: hidden;">
+                    <i class="fas fa-arrow-left"></i> Previous
+                </button>
+                <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>
+                    Next <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Special Modules Section -->
+    <section class="section" id="modules">
+        <div class="section-header">
+            <h2>Specialized <span>Support Modules</span></h2>
+            <p>Dedicated assistance for specific cyber emergency situations</p>
+        </div>
+        <div class="modules-grid">
+            <div class="module-card phone">
+                <div class="module-icon">
+                    <i class="fas fa-mobile-screen"></i>
+                </div>
+                <h3>📱 Phone Lost Emergency Mode</h3>
+                <p>Complete step-by-step guide when your phone is lost or stolen to secure all your accounts and data.</p>
+                <ul class="module-features">
+                    <li><i class="fas fa-check"></i> SIM blocking procedure</li>
+                    <li><i class="fas fa-check"></i> IMEI blocking guidance</li>
+                    <li><i class="fas fa-check"></i> Remote phone lock & data erase</li>
+                    <li><i class="fas fa-check"></i> Gmail, WhatsApp, UPI security steps</li>
+                    <li><i class="fas fa-check"></i> Police complaint assistance</li>
+                </ul>
+            </div>
+
+            <div class="module-card women">
+                <div class="module-icon">
+                    <i class="fas fa-hand-holding-heart"></i>
+                </div>
+                <h3>👩 Women Cyber Safety Support</h3>
+                <p>Sensitive, judgment-free support for women facing photo misuse, fake profiles, or online threats.</p>
+                <ul class="module-features">
+                    <li><i class="fas fa-check"></i> Emotional reassurance & support</li>
+                    <li><i class="fas fa-check"></i> Evidence preservation guidance</li>
+                    <li><i class="fas fa-check"></i> Safe reporting procedures</li>
+                    <li><i class="fas fa-check"></i> Content takedown assistance</li>
+                    <li><i class="fas fa-check"></i> Women helpline connections</li>
+                </ul>
+            </div>
+
+            <div class="module-card evidence">
+                <div class="module-icon">
+                    <i class="fas fa-folder-open"></i>
+                </div>
+                <h3>📄 Evidence Collection Assistant</h3>
+                <p>Proper evidence collection increases complaint success rate. Learn what to save and how.</p>
+                <ul class="module-features">
+                    <li><i class="fas fa-check"></i> Screenshot guidance</li>
+                    <li><i
